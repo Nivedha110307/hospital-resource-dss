@@ -1,0 +1,40 @@
+HR-DSS - Phase 1 EDA Summary
+=============================
+
+Rows after cleaning: 49903
+Date range: 2019-05-08 to 2024-05-07
+
+-- Descriptive stats --
+    n  age_mean   age_sd  los_mean   los_sd  los_median  billing_mean  billing_median
+49903 51.693566 19.58698  15.49979 8.651162        15.0  25605.904582    25594.558475
+
+-- Department distribution --
+      department    n  pct
+     Orthopedics 8429 16.9
+   Endocrinology 8366 16.8
+      Cardiology 8301 16.6
+        Oncology 8278 16.6
+General Medicine 8275 16.6
+     Pulmonology 8254 16.5
+
+-- Admission type distribution --
+admission_type     n
+      Elective 16795
+        Urgent 16747
+     Emergency 16361
+
+-- Length of stay by department --
+      department  mean_los  median_los    n
+     Pulmonology 15.663799        16.0 8254
+     Orthopedics 15.554396        16.0 8429
+        Oncology 15.480068        15.0 8278
+General Medicine 15.447855        15.0 8275
+      Cardiology 15.445127        15.0 8301
+   Endocrinology 15.408080        15.0 8366
+
+-- Correlation matrix --
+                  age  length_of_stay  billing_amount  room_number
+age             1.000           0.008          -0.001       -0.001
+length_of_stay  0.008           1.000          -0.004       -0.005
+billing_amount -0.001          -0.004           1.000       -0.004
+room_number    -0.001          -0.005          -0.004        1.000

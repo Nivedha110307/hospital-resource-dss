@@ -1,0 +1,16 @@
+# R
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Outputs that are large/regenerable (keep small sample outputs tracked if desired)
+/data/raw/*.zip
+
+# Shiny
+/app/rsconnect/
