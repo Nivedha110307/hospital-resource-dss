@@ -1,4 +1,4 @@
-day,occupied_beds
+day_seq,occupied_beds
 2019-05-08,24
 2019-05-09,57
 2019-05-10,73

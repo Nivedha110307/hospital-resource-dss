@@ -1,0 +1,13 @@
+department,model,holdout_mae,holdout_months
+Cardiology,SeasonalNaive,20.166666666666668,12
+Cardiology,ETS,16.804772764364973,12
+Endocrinology,SeasonalNaive,21.666666666666668,12
+Endocrinology,ETS,19.79557538279792,12
+General Medicine,SeasonalNaive,20.916666666666668,12
+General Medicine,ETS,15.25,12
+Oncology,SeasonalNaive,20.25,12
+Oncology,ETS,16.53997334275537,12
+Orthopedics,SeasonalNaive,17.583333333333332,12
+Orthopedics,ETS,17.272161336490516,12
+Pulmonology,SeasonalNaive,18.916666666666668,12
+Pulmonology,ETS,19.297722921733126,12

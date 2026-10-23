@@ -1,0 +1,5 @@
+"scenario","unmet_beds_p50","unmet_beds_p90","unmet_rate_p90","icu_beds_p90"
+"Baseline",235,262,0.592760180995475,45
+"Demand surge",338,368,0.671532846715328,55
+"High acuity",235,261,0.591836734693878,89
+"Combined stress",339,367,0.670932358318099,110

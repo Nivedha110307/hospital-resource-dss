@@ -1,4 +1,4 @@
-# Hospital Resource Decision Support System (HR-DSS)
+# Hospital Resource Decision Support System (HR-DSS 2.0)
 
 ## Problem statement
 
@@ -20,11 +20,13 @@ planning.
 - Phase 4 → What if conditions change? (simulation & risk)
 - Phase 5 → How does the decision-maker use the results? (Shiny dashboard)
 
-## Status: Phase 1 complete ✅
+## Status: Phases 1–5 implemented ✅
 
-Data acquisition, cleaning, feature engineering, and exploratory analysis.
-See `outputs/reports/phase1_eda_summary.txt`, `outputs/figures/`, and
-`outputs/tables/` for results, and `docs/methodology.md` for details.
+The repository contains the complete analysis workflow plus dynamic capacity
+stress testing and explainable resource reallocation. The dashboard applies
+scenario changes to forecasts, recomputes modeled bed demand, and reruns the
+same allocation functions used by the batch optimizer without refitting the
+historical forecasting models. Read `docs/methodology.md` for assumptions.
 
 ## Technology stack
 
@@ -34,7 +36,7 @@ See `outputs/reports/phase1_eda_summary.txt`, `outputs/figures/`, and
 | Data processing | tidyverse, janitor, lubridate |
 | Visualization | ggplot2 |
 | Forecasting (Phase 2) | forecast / fable |
-| Optimization (Phase 3) | lpSolve |
+| Optimization (Phase 3) | Exact discrete convex allocation (base R) |
 | Simulation (Phase 4) | base R / simmer |
 | Dashboard (Phase 5) | Shiny, plotly, DT |
 | Version control | Git + GitHub |
@@ -49,9 +51,13 @@ hospital-resource-dss/
 │   └── README.md           # dataset documentation & provenance
 ├── R/
 │   ├── 01_data_cleaning.R
-│   └── 02_eda.R
+│   ├── 02_eda.R
+│   ├── 03_forecasting.R
+│   ├── allocation_functions.R # Shared scenario and allocation functions
+│   ├── 04_optimization.R
+│   └── 05_simulation.R
 ├── models/                 # (Phase 2+ forecasting/optimization models)
-├── app/                    # (Phase 5 Shiny dashboard)
+├── app/app.R               # Phase 5 Shiny dashboard
 ├── outputs/
 │   ├── figures/
 │   ├── tables/
@@ -64,22 +70,42 @@ hospital-resource-dss/
 └── README.md
 ```
 
-## How to run Phase 1
+## How to run the project
 
-```r
-install.packages(c("tidyverse", "janitor", "lubridate", "scales"))
-# or: source("requirements.R")
-
-source("R/01_data_cleaning.R")   # writes data/processed/healthcare_clean.csv
-source("R/02_eda.R")             # writes outputs/figures, outputs/tables, outputs/reports
+```powershell
+Rscript.exe -e "source('requirements.R')"
+Rscript.exe R/01_data_cleaning.R
+Rscript.exe R/02_eda.R
+Rscript.exe R/03_forecasting.R
+Rscript.exe R/04_optimization.R
+Rscript.exe R/05_simulation.R
+Rscript.exe tests/test_allocation_scenarios.R
+Rscript.exe -e "shiny::runApp('app')"
 ```
+
+Set `HRDSS_BED_CAPACITY` before running `R/04_optimization.R` to change the
+total bed pool, or `HRDSS_SIMULATIONS` before `R/05_simulation.R` to change
+the number of Monte Carlo iterations. The dashboard lets you recalculate the
+allocation and scenario simulation for the selected capacity and stress
+scenario. It also compares the weighted balanced shortage policy with a
+configurable minimum department demand floor. Forecast models are not rerun
+when scenario controls change.
+
+The dashboard can be launched from the repository root with
+`Rscript.exe -e "shiny::runApp('app')"`, or from `app/` with
+`Rscript.exe -e "shiny::runApp('.')"`.
+
+Generated Phase 2–4 tables are written under `outputs/tables/`:
+`demand_forecast.csv`, `forecast_model_comparison.csv`, `bed_allocation.csv`,
+`simulation_results.csv`, and `simulation_summary.csv`.
+The optimizer also writes `allocation_summary.csv`.
 
 ## Dataset
 
 Synthetic 55,500-record hospital dataset (Kaggle: prasad22/healthcare-dataset).
 See `data/README.md` for the full data dictionary, known data-quality issues,
-and every derived/proxy variable (e.g. `department`, `length_of_stay`),
-clearly labeled as such.
+and derived/proxy variable definitions. Forecasts and resource recommendations
+are demonstrations on synthetic data, not validated operational guidance.
 
 ## License
 
